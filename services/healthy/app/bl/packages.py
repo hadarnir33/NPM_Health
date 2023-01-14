@@ -4,6 +4,7 @@ import json
 
 MINIMUM_MAINTAINERS_NUMBER = 2
 MAXIMUM_LAST_VERSION_DAYS_AGE = 30
+MAXIMUM_LAST_COMMIT_DAYS_AGE = 14
 
 
 def check_health_of_packages(packages: models.Packages) -> bool:
@@ -29,3 +30,7 @@ def check_health_by_last_version_date(packag_data: str) ->bool:
 def check_health_by_maintainers(package_data: str) -> bool:
     package_maintainers_number = len(package_data["collected"]["metadata"]["maintainers"])
     return True if package_maintainers_number >= MINIMUM_MAINTAINERS_NUMBER else False
+
+
+def check_health_by_last_commit_date(packag_data: str) ->bool:
+    pass
