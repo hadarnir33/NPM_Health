@@ -2,4 +2,4 @@ from pydantic import BaseModel
 
 
 class Packages(BaseModel):
-    packages: list
+    packages_names_list: list
