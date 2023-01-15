@@ -30,7 +30,7 @@ def check_health_by_last_version_date(package_data: dict) ->bool:
     return True if last_version_date >= healthy_date else False
 
 
-def check_health_by_maintainers(package_data: str) -> bool:
+def check_health_by_maintainers(package_data: dict) -> bool:
     package_maintainers_number = len(package_data["collected"]["metadata"]["maintainers"])
     return True if package_maintainers_number >= MINIMUM_MAINTAINERS_NUMBER else False
 
