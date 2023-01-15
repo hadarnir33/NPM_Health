@@ -2,13 +2,14 @@ import models
 import requests
 import json
 from datetime import datetime, timedelta
+from typing import Dict
 
 MINIMUM_MAINTAINERS_NUMBER = 2
 MAXIMUM_LAST_VERSION_DAYS_AGE = 30
 MAXIMUM_LAST_COMMIT_DAYS_AGE = 14
 
 
-def check_health_of_packages(packages: models.Packages) -> dict[bool, str]:
+def check_health_of_packages(packages: models.Packages) -> Dict[bool, str]:
     return {package_name: _check_health_of_package(package_data) for
             package_name, package_data in {package_name: _get_package_data(package_name) for
             package_name in packages.packages_names_list}.items()}
