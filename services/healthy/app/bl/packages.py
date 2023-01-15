@@ -39,5 +39,19 @@ def check_health_by_maintainers(package_data: dict) -> bool:
     return True if package_maintainers_number >= MINIMUM_MAINTAINERS_NUMBER else False
 
 
-def check_health_by_last_commit_date(package_data: dict) -> bool:
-    print(package_data["collected"]["github"]["commits"])
+def _check_health_by_last_commit_date(package_data: dict) -> bool:
+    healthy_date = datetime.today() - timedelta(days=MAXIMUM_LAST_COMMIT_DAYS_AGE)
+    return True if _get_last_commit_date(package_data) >= healthy_date else False
+
+
+def _get_last_commit_date(package_data: dict):
+    github_link_splited = package_data["collected"]["metadata"]["links"]["repository"].split(
+        '/')
+    repo = github_link_splited[len(github_link_splited) - 1]
+    owner = github_link_splited[len(github_link_splited) - 2]
+    url = f'https://api.github.com/repos/{owner}/{repo}/commits'
+    response = requests.get(url)
+    commits = response.json()
+    last_commit_date = datetime.strptime(
+        commits[0]["commit"]["committer"]["date"], "%Y-%m-%dT%H:%M:%SZ")
+    return last_commit_date
