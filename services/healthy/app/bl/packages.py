@@ -14,7 +14,12 @@ def check_health_of_packages(packages: models.Packages) -> dict[bool, str]:
             package_name in packages.packages_names_list}.items()}
 
 
-def get_package_data(package_name: str) -> dict:
+def _check_health_of_package(package_data: dict) -> bool:
+    return _check_health_by_maintainers(package_data) and _check_health_by_last_version_date(
+        package_data) and _check_health_by_last_commit_date(package_data)
+
+
+def _get_package_data(package_name: str) -> dict:
     url = f'https://api.npms.io/v2/package/{package_name}'
     response = requests.get(url)
     package_data = json.loads(response.content)
