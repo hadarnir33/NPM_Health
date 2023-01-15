@@ -26,14 +26,14 @@ def _get_package_data(package_name: str) -> dict:
     return package_data
 
 
-def check_health_by_last_version_date(package_data: dict) -> bool:
+def _check_health_by_last_version_date(package_data: dict) -> bool:
     healthy_date = datetime.today() - timedelta(days=MAXIMUM_LAST_VERSION_DAYS_AGE)
     last_version_date = datetime.strptime(
         package_data["collected"]["metadata"]["date"], '%Y-%m-%dT%H:%M:%S.%fZ')
     return True if last_version_date >= healthy_date else False
 
 
-def check_health_by_maintainers(package_data: dict) -> bool:
+def _check_health_by_maintainers(package_data: dict) -> bool:
     package_maintainers_number = len(
         package_data["collected"]["metadata"]["maintainers"])
     return True if package_maintainers_number >= MINIMUM_MAINTAINERS_NUMBER else False
