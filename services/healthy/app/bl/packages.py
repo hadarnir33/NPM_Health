@@ -8,13 +8,10 @@ MAXIMUM_LAST_VERSION_DAYS_AGE = 30
 MAXIMUM_LAST_COMMIT_DAYS_AGE = 14
 
 
-def check_health_of_packages(packages: models.Packages) -> bool:
-    packages_health_list = {}
-    for package_name in packages.packages_names_list:
-        package_data = get_package_data(package_name)
-        health = check_health_by_maintainers(package_data) and check_health_by_last_version_date(package_data) and check_health_by_last_commit_date(package_data)
-        packages_health_list[package_name] = health
-    return packages_health_list
+def check_health_of_packages(packages: models.Packages) -> dict[bool, str]:
+    return {package_name: _check_health_of_package(package_data) for
+            package_name, package_data in {package_name: _get_package_data(package_name) for
+            package_name in packages.packages_names_list}.items()}
 
 
 def get_package_data(package_name: str) -> dict:
