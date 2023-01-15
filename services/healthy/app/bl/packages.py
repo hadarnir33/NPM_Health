@@ -1,6 +1,7 @@
 import models
 import requests
 import json
+from datetime import datetime, timedelta
 
 MINIMUM_MAINTAINERS_NUMBER = 2
 MAXIMUM_LAST_VERSION_DAYS_AGE = 30
@@ -11,7 +12,7 @@ def check_health_of_packages(packages: models.Packages) -> bool:
     packages_health_list = {}
     for package_name in packages.packages_names_list:
         package_data = get_package_data(package_name)
-        health = check_health_by_maintainers(package_data)
+        health = check_health_by_maintainers(package_data) and check_health_by_last_version_date(package_data)
         packages_health_list[package_name] = health
     return packages_health_list
 
@@ -23,8 +24,10 @@ def get_package_data(package_name: str) -> dict:
     return package_data
 
 
-def check_health_by_last_version_date(packag_data: str) ->bool:
-    pass
+def check_health_by_last_version_date(package_data: dict) ->bool:
+    healthy_date = datetime.today() - timedelta(days=MAXIMUM_LAST_VERSION_DAYS_AGE)
+    last_version_date = datetime.strptime(package_data["collected"]["metadata"]["date"], '%Y-%m-%dT%H:%M:%S.%fZ')
+    return True if last_version_date >= healthy_date else False
 
 
 def check_health_by_maintainers(package_data: str) -> bool:
