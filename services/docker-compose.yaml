@@ -1,0 +1,10 @@
+services:
+  resty:
+    image: resty
+    ports:
+      - "8000:8000"
+
+  healthy:
+    image: healthy
+    ports:
+      - "9000:9000"
