@@ -1,6 +1,5 @@
 from fastapi import Response
 import requests
-import json
 
 
 def send_request_to_healthy(packages: dict, response: Response) -> Response:
